@@ -27,9 +27,9 @@ public class ActiveActivity extends Activity {
     setContentView(activityActiveBinding.getRoot());
     // 取消激活
     if (AppData.setting.getIsActive()) deactivate();
-    //setButtonListener();
+    setButtonListener();
     // 绘制UI
-    //drawUi();
+    drawUi();
   }
 
   private void drawUi() {
