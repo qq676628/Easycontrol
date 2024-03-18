@@ -29,7 +29,7 @@ public class ActiveActivity extends Activity {
     if (AppData.setting.getIsActive()) deactivate();
     setButtonListener();
     // 绘制UI
-    //drawUi();
+    drawUi();
   }
 
   private void drawUi() {
