@@ -2,6 +2,7 @@ package top.saymzx.easycontrol.app.client.view;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 import top.saymzx.easycontrol.app.R;
 import top.saymzx.easycontrol.app.client.Client;
@@ -35,6 +37,7 @@ public class FullActivity extends Activity implements SensorEventListener {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    ViewTools.setStatusAndNavBar(this);
     ViewTools.setFullScreen(this);
     activityFullBinding = ActivityFullBinding.inflate(this.getLayoutInflater());
     setContentView(activityFullBinding.getRoot());
@@ -48,11 +51,10 @@ public class FullActivity extends Activity implements SensorEventListener {
     setNavBarHide(device.showNavBarOnConnect);
     autoRotate = AppData.setting.getAutoRotate();
     activityFullBinding.buttonAutoRotate.setImageResource(autoRotate ? R.drawable.un_auto : R.drawable.auto);
-    if (device.address.contains("#")) {
+    if (!Objects.equals(device.startApp, "")) {
       activityFullBinding.buttonHome.setVisibility(View.GONE);
       activityFullBinding.buttonSwitch.setVisibility(View.GONE);
       activityFullBinding.buttonApp.setVisibility(View.GONE);
-      activityFullBinding.textureViewLayout.setPadding(0, PublicTools.dp2px(20f), 0, 0);
     }
     // 按键监听
     setButtonListener();
@@ -133,7 +135,7 @@ public class FullActivity extends Activity implements SensorEventListener {
       clientController.handleAction(light ? "buttonLight" : "buttonLightOff", null, 0);
       changeBarView();
     });
-    activityFullBinding.bar.setOnClickListener(v -> changeBarView());
+    activityFullBinding.buttonMore.setOnClickListener(v -> changeBarView());
     activityFullBinding.buttonAutoRotate.setOnClickListener(v -> {
       autoRotate = !autoRotate;
       AppData.setting.setAutoRotate(autoRotate);
@@ -146,11 +148,13 @@ public class FullActivity extends Activity implements SensorEventListener {
     activityFullBinding.navBar.setVisibility(isShow ? View.VISIBLE : View.GONE);
     activityFullBinding.buttonNavBar.setImageResource(isShow ? R.drawable.not_equal : R.drawable.equals);
     activityFullBinding.textureViewLayout.post(this::updateMaxSize);
+    activityFullBinding.buttonMore.setImageTintList(ColorStateList.valueOf(getResources().getColor(isShow ? R.color.onCardBackground : R.color.onBlackBacnground)));
   }
 
   private void changeBarView() {
     boolean toShowView = activityFullBinding.barView.getVisibility() == View.GONE;
-    ViewTools.viewAnim(activityFullBinding.barView, toShowView, PublicTools.dp2px(40f), 0, (isStart -> {
+    boolean isLandscape = lastOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || lastOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+    ViewTools.viewAnim(activityFullBinding.barView, toShowView, 0, PublicTools.dp2px(40f) * (isLandscape ? -1 : 1), (isStart -> {
       if (isStart && toShowView) activityFullBinding.barView.setVisibility(View.VISIBLE);
       else if (!isStart && !toShowView) activityFullBinding.barView.setVisibility(View.GONE);
     }));
