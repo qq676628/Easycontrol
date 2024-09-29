@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">易控•远程控制</string>
+  <string name="app_name">易控</string>
   <string name="app_name_simple">易控</string>
-  <string name="app_name_dev">易控•远程控制Beta</string>
+  <string name="app_name_dev">易控</string>
 
   <!-- 主页 -->
   <string name="main_poem">春色三分，二分尘土，一分流水</string>
@@ -115,7 +115,7 @@
   <string name="set_device_button_delete">删除</string>
 
   <!-- 加载中模块 -->
-  <string name="loading_text">加加加加载中</string>
+  <string name="loading_text">加载中···</string>
 
   <!-- 提示文本 -->
   <string name="toast_change_locale">Ok, you may need to restart the APP</string>
